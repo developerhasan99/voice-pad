@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+}
+
+#root {
+    padding: 10px;
+}
+
+.App {
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+  
+  }
+  
+  textarea {
+    padding: 15px;
+    width: calc(100% - 30px);
+    font-size: 20px;
+    background-color: transparent;
+  }
+  
+  button {
+    cursor: pointer;
+  }
