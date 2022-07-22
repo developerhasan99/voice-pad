@@ -1,102 +1,61 @@
-import { useRef } from "react";
-import { useStateWithCallbackLazy } from "use-state-with-callback";
-
-const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
-
-const recognition = new SpeechRecognition();
-
-recognition.continuous = false;
-recognition.interimResults = false;
-recognition.maxAlternatives = 1;
+import BottomPanel from "./Components/BottomPanel";
+import TextArea from "./Components/TextArea";
+import ContextProvider from "./context/ContextPeovider";
 
 function App() {
-  const [state, setState] = useStateWithCallbackLazy({
-    listning: false,
-    text: "",
-    isBangla: true,
-  });
+  // recognition.lang = state.isBangla ? "bn-bd" : "en-us";
 
-  recognition.lang = state.isBangla ? "bn-bd" : "en-us";
+  // window.onkeydown = function (e) {
+  //   if (e.altKey && e.key === "z") {
+  //     if (!state.listning) recognition.start();
+  //     setState({
+  //       ...state,
+  //       listning: true,
+  //     });
+  //   }
+  // };
 
-  const editorRef = useRef();
+  // recognition.onresult = function (event) {
+  //   const curPos = editorRef.current.selectionStart;
 
-  const handleOnChange = (e) => {
-    setState({
-      ...state,
-      text: e.target.value,
-    });
-  };
+  //   const newText = () => {
+  //     if (editorRef.current.value.length === 0) {
+  //       return event.results[0][0].transcript + " ";
+  //     }
+  //     return (
+  //       editorRef.current.value.slice(0, curPos) +
+  //       event.results[0][0].transcript +
+  //       editorRef.current.value.slice(curPos)
+  //     );
+  //   };
 
-  window.onkeydown = function (e) {
-    if (e.altKey && e.key === "z") {
-      if (!state.listning) recognition.start();
-      setState({
-        ...state,
-        listning: true,
-      });
-    }
-  };
+  //   const latestText = newText();
 
-  recognition.onresult = function (event) {
-    const curPos = editorRef.current.selectionStart;
+  //   const newCurPos = curPos + event.results[0][0].transcript.length;
 
-    const newText = () => {
-      if (editorRef.current.value.length === 0) {
-        return event.results[0][0].transcript + " ";
-      }
-      return (
-        editorRef.current.value.slice(0, curPos) +
-        event.results[0][0].transcript +
-        editorRef.current.value.slice(curPos)
-      );
-    };
+  //   setState(
+  //     {
+  //       ...state,
+  //       listning: false,
+  //       text: latestText,
+  //     },
+  //     () => {
+  //       editorRef.current.setSelectionRange(newCurPos, newCurPos);
+  //     }
+  //   );
+  // };
 
-    const latestText = newText();
-
-    const newCurPos = curPos + event.results[0][0].transcript.length;
-
-    setState(
-      {
-        ...state,
-        listning: false,
-        text: latestText,
-      },
-      () => {
-        editorRef.current.setSelectionRange(newCurPos, newCurPos);
-      }
-    );
-  };
-
-  const handleLanguageChange = () => {
-    setState({ ...state, isBangla: !state.isBangla });
-  };
+  // const handleLanguageChange = () => {
+  //   setState({ ...state, isBangla: !state.isBangla });
+  // };
 
   return (
-    <div className="App">
-      <textarea
-        id="editor"
-        ref={editorRef}
-        onChange={handleOnChange}
-        cols="30"
-        rows="20"
-        value={state.text}
-        placeholder={
-          state.isBangla ? "কথা বলে লিখতে শুরু করুন!" : "Speek to write!"
-        }
-      ></textarea>
-      <div>
-        <p>
-          Status:{" "}
-          {state.listning
-            ? "Listening..."
-            : 'Press "Alt+z" to start voice typing!'}
-        </p>
-        <button onClick={handleLanguageChange}>
-          click here to switch language to{" "}
-          {state.isBangla ? "English" : "Bangla"}
-        </button>
+    <ContextProvider>
+      <div className="App">
+        <TextArea />
+        <BottomPanel />
       </div>
-    </div>
+    </ContextProvider>
   );
 }
 
