@@ -27,7 +27,7 @@ function App() {
     if (e.altKey && e.key === "z") {
       setState({
         ...state,
-        isListening: true,
+        isListening: !state.isCopied,
       });
     }
   };
