@@ -1,11 +1,14 @@
+// ─── Import Dependecies ─────────────────────────────────────────────────────────
 import { IconButton, Snackbar, Alert } from "@mui/material";
 import { CopyAll } from "@mui/icons-material";
 import { useContext } from "react";
 import context from "../context/Context";
 
+// ─── Scafolding The Component ───────────────────────────────────────────────────
 function CopyBtn() {
   const { state, setState } = useContext(context);
 
+  // ─── Handle Copy Function ───────────────────────────────────────────────────────
   const handleCopy = () => {
     navigator.clipboard
       .writeText(state.text)
@@ -13,6 +16,7 @@ function CopyBtn() {
       .catch((e) => console.log(e));
   };
 
+  // ─── Handle Snackbar Close Event ────────────────────────────────────────────────
   const handleClose = () => {
     setState({ ...state, isCopied: false });
   };
@@ -27,11 +31,19 @@ function CopyBtn() {
         <CopyAll />
       </IconButton>
       <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={state.isCopied}
         autoHideDuration={6000}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        <Alert
+          sx={{
+            width: "100%",
+          }}
+          variant="filled"
+          onClose={handleClose}
+          severity="success"
+        >
           Texts Copied to Clipboard!
         </Alert>
       </Snackbar>
@@ -39,4 +51,5 @@ function CopyBtn() {
   );
 }
 
+// ─── Export The Module ──────────────────────────────────────────────────────────
 export default CopyBtn;

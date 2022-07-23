@@ -1,62 +1,88 @@
+// ─── Import Dependecies ─────────────────────────────────────────────────────────
+import { useRef } from "react";
+import { useStateWithCallbackLazy } from "use-state-with-callback";
 import BottomPanel from "./Components/BottomPanel";
 import TextArea from "./Components/TextArea";
-import ContextProvider from "./context/ContextPeovider";
+import context from "./context/Context";
+import recognition from "./utils/speachRecognition";
 
+// ─── Scafolding The Component ───────────────────────────────────────────────────
 function App() {
-  // recognition.lang = state.isBangla ? "bn-bd" : "en-us";
+  // ─── Setup State ────────────────────────────────────────────────────────────────
+  const [state, setState] = useStateWithCallbackLazy({
+    isBangla: true,
+    isListening: false,
+    isCopied: false,
+    text: "",
+  });
 
-  // window.onkeydown = function (e) {
-  //   if (e.altKey && e.key === "z") {
-  //     if (!state.listning) recognition.start();
-  //     setState({
-  //       ...state,
-  //       listning: true,
-  //     });
-  //   }
-  // };
+  // ─── Set Recognition Language Based On State ────────────────────────────────────
+  recognition.lang = state.isBangla ? "bn-bd" : "en-us";
 
-  // recognition.onresult = function (event) {
-  //   const curPos = editorRef.current.selectionStart;
+  // ─── Create A Editor Refarance ──────────────────────────────────────────────────
+  const editorRef = useRef(null);
 
-  //   const newText = () => {
-  //     if (editorRef.current.value.length === 0) {
-  //       return event.results[0][0].transcript + " ";
-  //     }
-  //     return (
-  //       editorRef.current.value.slice(0, curPos) +
-  //       event.results[0][0].transcript +
-  //       editorRef.current.value.slice(curPos)
-  //     );
-  //   };
+  // ─── Listen Keyboard Event ──────────────────────────────────────────────────────
+  window.onkeydown = function (e) {
+    if (e.altKey && e.key === "z") {
+      setState({
+        ...state,
+        isListening: true,
+      });
+    }
+  };
 
-  //   const latestText = newText();
+  // ─── Conditionaly Start And Stop Voice Recognition ──────────────────────────────
+  if (state.isListening) {
+    recognition.start();
+  } else {
+    recognition.stop();
+  }
 
-  //   const newCurPos = curPos + event.results[0][0].transcript.length;
+  // ─── Handle Recognition Result ──────────────────────────────────────────────────
+  recognition.onresult = function (event) {
+    const newText = () => {
+      if (editorRef.current.value.length === 0) {
+        return event.results[0][0].transcript;
+      }
+      return (
+        editorRef.current.value.slice(0, curPos) +
+        event.results[0][0].transcript +
+        editorRef.current.value.slice(curPos)
+      );
+    };
 
-  //   setState(
-  //     {
-  //       ...state,
-  //       listning: false,
-  //       text: latestText,
-  //     },
-  //     () => {
-  //       editorRef.current.setSelectionRange(newCurPos, newCurPos);
-  //     }
-  //   );
-  // };
+    // ─── Get Current Cursor Position Before Updating The State ───────
+    const curPos = editorRef.current.selectionStart;
 
-  // const handleLanguageChange = () => {
-  //   setState({ ...state, isBangla: !state.isBangla });
-  // };
+    // ─── Calculate New Cursor Position ───────────────────────────────
+    const newCurPos = curPos + event.results[0][0].transcript.length;
+
+    // ─── Updare The State ────────────────────────────────────────────
+    setState(
+      {
+        ...state,
+        isListening: false,
+        text: newText(),
+      },
+      () => {
+        //
+        // UPDATE THE CURSOR POSITION
+        //
+        editorRef.current.setSelectionRange(newCurPos, newCurPos);
+      }
+    );
+  };
 
   return (
-    <ContextProvider>
+    <context.Provider value={{ state, setState }}>
       <div className="App">
-        <TextArea />
+        <TextArea ref={editorRef} />
         <BottomPanel />
       </div>
-    </ContextProvider>
+    </context.Provider>
   );
 }
 
+// ─── Export The Module ──────────────────────────────────────────────────────────
 export default App;

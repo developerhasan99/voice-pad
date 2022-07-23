@@ -1,10 +1,13 @@
+// ─── Import Dependecies ─────────────────────────────────────────────────────────
 import { Grid, Switch } from "@mui/material";
 import { useContext } from "react";
 import context from "../context/Context";
 
+// ─── Scafolding The Component ───────────────────────────────────────────────────
 function LanguageToggler() {
   const { state, setState } = useContext(context);
 
+  // ─── Handle Change Event ────────────────────────────────────────────────────────
   const handleChange = () => {
     setState({ ...state, isBangla: !state.isBangla });
   };
@@ -30,4 +33,5 @@ function LanguageToggler() {
   );
 }
 
+// ─── Export The Module ──────────────────────────────────────────────────────────
 export default LanguageToggler;

@@ -1,14 +1,16 @@
-import { useContext, useRef } from "react";
+// ─── Import Dependecies ─────────────────────────────────────────────────────────
+import { forwardRef, useContext } from "react";
 import context from "../context/Context";
 
-function TextArea() {
-  const editorRef = useRef(null);
-
+// ─── Scafolding The Component ───────────────────────────────────────────────────
+const TextArea = forwardRef((props, ref) => {
   const { state, setState } = useContext(context);
 
+  // ─── Handle The Onchange Event Of Textarea ──────────────────────────────────────
   const handleOnChange = (e) => {
     setState({
       ...state,
+      isListening: false,
       text: e.target.value,
     });
   };
@@ -16,7 +18,7 @@ function TextArea() {
   return (
     <textarea
       id="editor"
-      ref={editorRef}
+      ref={ref}
       onChange={handleOnChange}
       value={state.text}
       placeholder={
@@ -26,6 +28,7 @@ function TextArea() {
       }
     />
   );
-}
+});
 
+// ─── Export The Module ──────────────────────────────────────────────────────────
 export default TextArea;

@@ -1,34 +1,27 @@
 // ─── Import Dependecies ─────────────────────────────────────────────────────────
-import { Box } from "@mui/material";
+import { Mic } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import { useContext } from "react";
 import context from "../context/Context";
-import CopyBtn from "./CoppyBtn";
-import LanguageToggler from "./LanguageTiggler";
-import MicButton from "./MicButton";
 
 // ─── Scafolding The Component ───────────────────────────────────────────────────
-function BottomPanel() {
-  const { state } = useContext(context);
+function MicButton() {
+  const { state, setState } = useContext(context);
+
+  // ─── Handle Onclick Event ───────────────────────────────────────────────────────
+  const handleClick = () => {
+    setState({ ...state, isListening: !state.isListening });
+  };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        marginTop: "-6px",
-        padding: "12px 15px",
-        gap: "15px",
-        alignItems: "center",
-      }}
+    <IconButton
+      onClick={handleClick}
+      sx={{ color: state.isListening && "success.main" }}
     >
-      <MicButton />
-      <p style={{ margin: "0" }}>
-        {state.isListening ? "Listening..." : "Wating..."}
-      </p>
-      <LanguageToggler />
-      <CopyBtn />
-    </Box>
+      <Mic />
+    </IconButton>
   );
 }
 
 // ─── Export The Module ──────────────────────────────────────────────────────────
-export default BottomPanel;
+export default MicButton;
