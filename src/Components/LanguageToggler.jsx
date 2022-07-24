@@ -1,7 +1,8 @@
 // ─── Import Dependecies ─────────────────────────────────────────────────────────
-import { Grid, Switch } from "@mui/material";
 import { useContext } from "react";
+import { Grid, Switch } from "@mui/material";
 import context from "../context/Context";
+import lstorage from "../utils/localStorage";
 
 // ─── Scafolding The Component ───────────────────────────────────────────────────
 function LanguageToggler() {
@@ -9,12 +10,17 @@ function LanguageToggler() {
 
   // ─── Handle Change Event ────────────────────────────────────────────────────────
   const handleChange = () => {
-    setState({ ...state, isBangla: !state.isBangla });
+    setState({ ...state, isBangla: !state.isBangla }, () => {
+      //
+      // SET STATE TO LOCALSTORAGE
+      //
+      lstorage.save(state);
+    });
   };
 
   return (
     <Grid
-      sx={{ justifyContent: "end" }}
+      sx={{ width: "auto", justifyContent: "end" }}
       component="div"
       container
       alignItems="center"

@@ -1,6 +1,7 @@
 // ─── Import Dependecies ─────────────────────────────────────────────────────────
 import { forwardRef, useContext } from "react";
 import context from "../context/Context";
+import lstorage from "../utils/localStorage";
 
 // ─── Scafolding The Component ───────────────────────────────────────────────────
 const TextArea = forwardRef((props, ref) => {
@@ -8,11 +9,19 @@ const TextArea = forwardRef((props, ref) => {
 
   // ─── Handle The Onchange Event Of Textarea ──────────────────────────────────────
   const handleOnChange = (e) => {
-    setState({
-      ...state,
-      isListening: false,
-      text: e.target.value,
-    });
+    setState(
+      {
+        ...state,
+        isListening: false,
+        text: e.target.value,
+      },
+      () => {
+        //
+        // SET STATE TO LOCALSTORAGE
+        //
+        lstorage.save(state);
+      }
+    );
   };
 
   return (

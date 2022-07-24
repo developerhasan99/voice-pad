@@ -1,10 +1,12 @@
 // ─── Import Dependecies ─────────────────────────────────────────────────────────
-import { useRef } from "react";
 import { useStateWithCallbackLazy } from "use-state-with-callback";
-import BottomPanel from "./Components/BottomPanel";
-import TextArea from "./Components/TextArea";
+import { useEffect, useRef } from "react";
 import context from "./context/Context";
+import handleKyeEvents from "./utils/handleKyeEvents";
 import recognition from "./utils/speachRecognition";
+import TextArea from "./Components/TextArea";
+import BottomPanel from "./Components/BottomPanel";
+import lstorage from "./utils/localStorage";
 
 // ─── Scafolding The Component ───────────────────────────────────────────────────
 function App() {
@@ -16,6 +18,13 @@ function App() {
     text: "",
   });
 
+  // ─── Update State From Local Storage ──────────────────────────────────────
+  useEffect(() => {
+    if (lstorage.get()) {
+      setState(lstorage.get());
+    }
+  }, []);
+
   // ─── Set Recognition Language Based On State ────────────────────────────────────
   recognition.lang = state.isBangla ? "bn-bd" : "en-us";
 
@@ -23,14 +32,7 @@ function App() {
   const editorRef = useRef(null);
 
   // ─── Listen Keyboard Event ──────────────────────────────────────────────────────
-  window.onkeydown = function (e) {
-    if (e.altKey && e.key === "z") {
-      setState({
-        ...state,
-        isListening: !state.isCopied,
-      });
-    }
-  };
+  handleKyeEvents(state, setState);
 
   // ─── Conditionaly Start And Stop Voice Recognition ──────────────────────────────
   if (state.isListening) {
@@ -70,6 +72,10 @@ function App() {
         // UPDATE THE CURSOR POSITION
         //
         editorRef.current.setSelectionRange(newCurPos, newCurPos);
+        //
+        // SET STATE TO LOCALSTORAGE
+        //
+        lstorage.save(state);
       }
     );
   };
@@ -80,6 +86,16 @@ function App() {
         <TextArea ref={editorRef} />
         <BottomPanel />
       </div>
+      <p className="footer__note">
+        Made with ❤️ - by{" "}
+        <a
+          href="https://web.facebook.com/developerhasan99/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Mehedi Hasan!
+        </a>{" "}
+      </p>
     </context.Provider>
   );
 }

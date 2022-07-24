@@ -16,7 +16,7 @@ function MicButton() {
   return (
     <IconButton
       onClick={handleClick}
-      sx={{ color: state.isListening && "success.main" }}
+      className={state.isListening ? "listening" : ""}
     >
       <Mic />
     </IconButton>

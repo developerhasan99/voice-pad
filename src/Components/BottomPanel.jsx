@@ -3,27 +3,21 @@ import { Box } from "@mui/material";
 import { useContext } from "react";
 import context from "../context/Context";
 import CopyBtn from "./CoppyBtn";
-import LanguageToggler from "./LanguageTiggler";
+import LanguageToggler from "./LanguageToggler";
 import MicButton from "./MicButton";
+import WordCounter from "./WordCOunter";
 
 // ─── Scafolding The Component ───────────────────────────────────────────────────
 function BottomPanel() {
   const { state } = useContext(context);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        marginTop: "-6px",
-        padding: "12px 15px",
-        gap: "15px",
-        alignItems: "center",
-      }}
-    >
+    <Box className="bottomPanel">
       <MicButton />
-      <p style={{ margin: "0" }}>
+      <p style={{ marginRight: "auto" }}>
         {state.isListening ? "Listening..." : "Wating..."}
       </p>
+      <WordCounter />
       <LanguageToggler />
       <CopyBtn />
     </Box>

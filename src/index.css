@@ -47,3 +47,57 @@ input:focus {
 /* textarea::-webkit-resizer {
   display: none;
 } */
+
+.bottomPanel {
+  display: flex;
+  margin-top: -6px;
+  padding: 12px 15px;
+  gap: 15px;
+  align-items: center;
+}
+
+.bottomPanel p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.footer__note {
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer__note a {
+  color: #2e7d32;
+}
+
+.listening {
+  color: #2e7d32 !important;
+  box-shadow: 0 0 0 rgba(46, 125, 50, 0.4);
+  animation: listening 1s infinite;
+}
+
+@-webkit-keyframes listening {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(46, 125, 50, 1);
+  }
+  90% {
+    -webkit-box-shadow: 0 0 0 15px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
+@keyframes listening {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.4);
+    box-shadow: 0 0 0 0 rgba(46, 125, 50, 1);
+  }
+  90% {
+    -moz-box-shadow: 0 0 0 15px rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}

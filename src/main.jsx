@@ -1,10 +1,22 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import React, { lazy } from "react";
+import ReactDOM from "react-dom/client";
+import Fallback from "./Fallback";
+import "./index.css";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
+if (
+  navigator.userAgent.indexOf("Firefox") != -1 ||
+  navigator.userAgent.indexOf("MSIE") != -1
+) {
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+      <Fallback />
+    </React.StrictMode>
+  );
+} else {
+  const App = lazy(() => import("./App"));
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
