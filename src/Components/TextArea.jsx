@@ -9,19 +9,14 @@ const TextArea = forwardRef((props, ref) => {
 
   // ─── Handle The Onchange Event Of Textarea ──────────────────────────────────────
   const handleOnChange = (e) => {
-    setState(
-      {
-        ...state,
-        isListening: false,
-        text: e.target.value,
-      },
-      () => {
-        //
-        // SET STATE TO LOCALSTORAGE
-        //
-        lstorage.save(state);
-      }
-    );
+    setState({
+      ...state,
+      isListening: false,
+      text: e.target.value,
+    });
+
+    // ─── Save State To Localstorage ──────────────────────────────────
+    lstorage.save(state);
   };
 
   return (

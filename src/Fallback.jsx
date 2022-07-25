@@ -3,7 +3,7 @@ function Fallback() {
   return (
     <Alert
       variant="filled"
-      severity="warning"
+      severity="error"
       sx={{
         width: "calc(100% -20px)%",
         maxWidth: "700px",

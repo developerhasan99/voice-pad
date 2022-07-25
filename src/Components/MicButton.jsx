@@ -10,7 +10,10 @@ function MicButton() {
 
   // ─── Handle Onclick Event ───────────────────────────────────────────────────────
   const handleClick = () => {
-    setState({ ...state, isListening: !state.isListening });
+    setState({
+      ...state,
+      isListening: !state.isListening,
+    });
   };
 
   return (

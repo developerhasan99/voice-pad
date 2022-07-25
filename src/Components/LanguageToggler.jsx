@@ -2,7 +2,6 @@
 import { useContext } from "react";
 import { Grid, Switch } from "@mui/material";
 import context from "../context/Context";
-import lstorage from "../utils/localStorage";
 
 // ─── Scafolding The Component ───────────────────────────────────────────────────
 function LanguageToggler() {
@@ -10,12 +9,7 @@ function LanguageToggler() {
 
   // ─── Handle Change Event ────────────────────────────────────────────────────────
   const handleChange = () => {
-    setState({ ...state, isBangla: !state.isBangla }, () => {
-      //
-      // SET STATE TO LOCALSTORAGE
-      //
-      lstorage.save(state);
-    });
+    setState({ ...state, isBangla: !state.isBangla });
   };
 
   return (

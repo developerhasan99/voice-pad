@@ -1,5 +1,5 @@
 // ─── Import Dependecies ─────────────────────────────────────────────────────────
-import { IconButton, Snackbar, Alert } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { CopyAll } from "@mui/icons-material";
 import { useContext } from "react";
 import context from "../context/Context";
@@ -16,37 +16,15 @@ function CopyBtn() {
       .catch((e) => console.log(e));
   };
 
-  // ─── Handle Snackbar Close Event ────────────────────────────────────────────────
-  const handleClose = () => {
-    setState({ ...state, isCopied: false });
-  };
-
   return (
     <>
       <IconButton
         onClick={handleCopy}
         title="Copy editor texts!"
-        color="success"
+        color={state.isCopied ? "success" : "default"}
       >
         <CopyAll />
       </IconButton>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={state.isCopied}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert
-          sx={{
-            width: "100%",
-          }}
-          variant="filled"
-          onClose={handleClose}
-          severity="success"
-        >
-          Texts Copied to Clipboard!
-        </Alert>
-      </Snackbar>
     </>
   );
 }
